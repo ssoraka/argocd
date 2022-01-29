@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/centos8"
+  config.vm.box_version = "3.5.0"
+  config.vm.box_check_update = false
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus = 2
+  end
+  config.vm.synced_folder ".", "/vagrant_iot"
+
+  config.vm.provision "file", source: "./", destination: "/home/vagrant/p2"
+  
+  config.vm.boot_timeout = 1000
+  config.vm.define "ophuongS" do |control|
+    control.vm.hostname = "ophuongS"
+    control.vm.network "private_network", ip: "192.168.42.110"
+    control.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--name", "ophuongS"]
+    end
+    control.vm.provision "shell", inline: <<-SHELL
+      export INSTALL_K3S_EXEC="--write-kubeconfig /home/vagrant/.kube/config --write-kubeconfig-mode 666 --node-ip 192.168.42.110"
+      curl -sfL https://get.k3s.io | sh -
+      systemctl stop firewalld
+      systemctl disable firewalld
+      sleep 25
+    SHELL
+    control.vm.provision "shell", path: "scripts/init_bash.sh"
+    control.vm.provision "shell", inline: <<-SHELL
+      /usr/local/bin/kubectl apply -f ./p2/confs/app3.yaml
+      /usr/local/bin/kubectl apply -f ./p2/confs/app1.yaml
+      /usr/local/bin/kubectl apply -f ./p2/confs/app2.yaml
+      /usr/local/bin/kubectl wait --for=condition=complete job/helm-install-traefik-crd -n kube-system --timeout=500s
+      /usr/local/bin/kubectl apply -f ./p2/confs/ingress.yaml
+    SHELL
+  end
+end
