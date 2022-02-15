@@ -2,9 +2,6 @@
 
 sudo apt update
 sudo apt -y upgrade
-# sudo apt-get install xfce4
-# sudo startxfce4&
-# sudo apt-get update
 
 # Install Docker Engine
 
