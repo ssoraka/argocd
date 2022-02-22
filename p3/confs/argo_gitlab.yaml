@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://gitlab.gitlab.svc.cluster.local:8081/root/argocd_project
+    repoURL: http://gitlab.gitlab.svc.cluster.local:8081/root/argocd_project.git
     targetRevision: HEAD
     path: manifest
   destination:
