@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-login = "bconchit"
+login = "sber"
 
 server_name = "#{login}S"
 server_ip   = "192.168.56.110"
