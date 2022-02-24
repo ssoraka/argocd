@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # cluster
-k3d cluster create mycluster --servers 1 --agents 0 -p "8080:80@loadbalancer" -p "8082:443@loadbalancer" -p "8888:8888@loadbalancer"
+k3d cluster create mycluster --servers 1 --agents 0 -p "8080:80@loadbalancer" -p "8888:8888@loadbalancer"
 
 # namespace
 kubectl create namespace argocd
