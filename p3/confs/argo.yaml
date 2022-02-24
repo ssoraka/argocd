@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ssoraka/argocd
+    repoURL: https://github.com/ssoraka/ssoraka_config
     targetRevision: HEAD
-    path: manifests
+    path: p3/confs/manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
